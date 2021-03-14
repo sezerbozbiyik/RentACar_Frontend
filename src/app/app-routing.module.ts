@@ -1,16 +1,15 @@
 import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BrandComponent } from 'src/app/components/brand/brand.component';
-import { ColorComponent } from 'src/app/components/color/color.component';
 import { CarComponent } from './components/car/car.component';
 import { RentalComponent } from './components/rental/rental.component';
 
 
 const routes: Routes = [
-  { path: 'brand-component', component: BrandComponent },
-  { path: 'color-component', component: ColorComponent },
-  { path: 'car-component', component: CarComponent },
-  { path: 'rental-component', component: RentalComponent },
+  { path: '', pathMatch:"full", component: CarComponent },
+  { path: 'cars', component: CarComponent },
+  { path: 'cars/brand/:brandId', component: CarComponent },
+  { path: 'cars/color/:colorId', component: CarComponent },
+  { path: 'rentals', component: RentalComponent },
 ];
 
 @NgModule({
