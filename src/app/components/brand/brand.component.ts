@@ -1,4 +1,3 @@
-import { CursorError } from '@angular/compiler/src/ml_parser/lexer';
 import { Component, OnInit } from '@angular/core';
 import { Brand } from 'src/app/models/brand';
 import { BrandService } from 'src/app/services/brand.service';
@@ -11,7 +10,7 @@ import { BrandService } from 'src/app/services/brand.service';
 export class BrandComponent implements OnInit {
 
   brands: Brand[] = [];
-  currentBrand:Brand;
+  currentBrand: Brand;
   dataLoaded = false;
   constructor(private brandService: BrandService) { }
 
@@ -45,6 +44,7 @@ export class BrandComponent implements OnInit {
       return "list-group-item "
     }
   }
+
   // deleteCurrentBrand(id:number){
   //   this.currentBrand = this.currentBrand.filter(item => item.id !== id);
   // } 

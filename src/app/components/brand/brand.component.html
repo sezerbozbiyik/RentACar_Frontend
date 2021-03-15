@@ -1,11 +1,26 @@
-<ul class="list-group">
-  <li [class]="getAllBrandClass()" routerLink="/cars">Tüm Markalar</li>
-  <li
-    (click)="setCurrentBrand(brand)"
-    routerLink="/cars/brand/{{ brand.id }}"
-    *ngFor="let brand of brands"
-    [class]="getCurrentBrandClass(brand)"
-  >
-    {{ brand.brandName }}
-  </li>
-</ul>
+<div class="accordion" id="brands">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button  routerLink="/cars" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#brand" aria-expanded="true" aria-controls="collapseOne">
+        Markalar
+      </button>
+    </h2>
+    <div id="brand" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#brands">
+      <div >
+        <ul class="list-group">
+          <li
+            (click)="setCurrentBrand(brand)"
+            routerLink="/cars/brand/{{ brand.id }}"
+            *ngFor="let brand of brands"
+            [class]="getCurrentBrandClass(brand)"
+          >
+            {{ brand.brandName }}
+          </li>
+        </ul>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
