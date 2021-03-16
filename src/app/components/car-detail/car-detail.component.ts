@@ -36,7 +36,7 @@ export class CarDetailComponent implements OnInit {
   getCarImageById(carId: number) {
     this.carService.getCarImagesByCarId(carId).subscribe((response) => {
       this.carImage=response.data[0];
-      console.log(this.carImage.imagePath);
+      console.log(response.data);
     })
   }
 
@@ -47,6 +47,8 @@ export class CarDetailComponent implements OnInit {
   }
 
   getImgContent(): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(this.carImage.imagePath);
+
+    
+    return this.sanitizer.bypassSecurityTrustUrl("http://localhost:8887/"+this.carImage.imagePath.slice(73));
 }
 }
