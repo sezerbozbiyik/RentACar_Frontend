@@ -1,26 +1,148 @@
-<div class="accordion" id="brands">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingOne">
-      <button  routerLink="/cars" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#brand" aria-expanded="true" aria-controls="collapseOne">
-        Markalar
-      </button>
-    </h2>
-    <div id="brand" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#brands">
-      <div >
-        <ul class="list-group">
-          <li
-            (click)="setCurrentBrand(brand)"
-            routerLink="/cars/brand/{{ brand.id }}"
-            *ngFor="let brand of brands"
-            [class]="getCurrentBrandClass(brand)"
+<div class="mb-3">
+  <label for="filterBrandText" class="form-label">Marka ara</label>
+  <input
+    type="text"
+    [(ngModel)]="filterText"
+    class="form-control"
+    id="filterBrandText"
+    placeholder="Arama ifadesi giriniz..."
+  />
+  <div *ngIf="filterText" class="alert alert-success">
+    {{ filterText }} aradınız.
+  </div>
+</div>
+
+<div class="list-group">
+  <div
+    class="list-group-item list-group-item-action"
+    *ngFor="let brand of brands | brandFilterPipe: filterText"
+    routerLink="/cars/filter/brand/{{brand.id}}"
+  >
+    <div class="float-start">
+      {{ brand.brandName }}
+    </div>
+    <div *ngIf="authService.isAuthenticated()">
+      <div class="float-end">
+        <button
+          class="btn btn-danger mx-2"
+          (click)="setCurrentBrand(brand)"
+          data-bs-toggle="modal"
+          data-bs-target="#brandDeleteModal"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-trash-fill"
+            viewBox="0 0 16 16"
           >
-            {{ brand.brandName }}
-          </li>
-        </ul>
-        </div>
+            <path
+              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="float-end">
+        <button
+          type="button"
+          class="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#brandModal"
+          (click)="setCurrentBrand(brand)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-arrow-repeat"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+            />
+            <path
+              fill-rule="evenodd"
+              d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
+<!--Brand Add Modal-->
+<div class="modal" tabindex="-1" id="brandModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Marka Detay</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="brandForm" *ngIf="currentBrand">
+          <div class="mb-3">
+            <label for="id">Marka No</label>
+            <input
+              class="form-control"
+              id="id"
+              placeholder="{{ currentBrand.id }}"
+              readonly
+            />
+          </div>
+          <div class="mb-3">
+            <label for="brandName">Marka Adı</label>
+            <input
+              type="brandName"
+              class="form-control"
+              formControlName="brandName"
+              placeholder="{{ currentBrand.brandName }}"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Geri
+        </button>
+        <button type="button" class="btn btn-primary" (click)="update()">
+          Güncelle
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
-
+<!--Brand Delete Modal-->
+<div class="modal" tabindex="-1" id="brandDeleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body" *ngIf="currentBrand">
+        {{ currentBrand.brandName }} markayı silmek İstediğinize Eminmisiniz!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Hayır
+        </button>
+        <button type="button" class="btn btn-primary" (click)="delete()">
+          Evet
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

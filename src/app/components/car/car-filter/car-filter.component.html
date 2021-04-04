@@ -1,0 +1,30 @@
+<div class="row row-cols-2">
+  <div class="input-group mb-3">
+    <div class="col-12">
+      <label class="input-group-text mb-2" for="brands">Marka </label>
+      <select [(ngModel)]="brandFilter" class="form-select" id="brands">
+        <option [value]="brand.id" *ngFor="let brand of brands">
+          {{ brand.brandName }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-12 my-3">
+      <label class="input-group-text mb-2" for="colors">Renk </label>
+      <select [(ngModel)]="colorFilter" class="form-select" id="colors">
+        <option [value]="color.id" *ngFor="let color of colors">
+          {{ color.colorName }}
+        </option>
+      </select>
+    </div>
+    <div class="col-12">
+      <button
+        class="btn btn-primary"
+        [routerLink]="routerCars()" routerLinkActive="router-link-active" 
+      >
+        Filtrele
+      </button>
+      <button class="btn btn-danger float-end" routerLink="/cars">Sıfırla</button>
+    </div>
+  </div>
+</div>

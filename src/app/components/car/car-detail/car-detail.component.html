@@ -1,0 +1,31 @@
+<div class="card" style="width: 100%" *ngIf="carDetail && carImages">
+  <div class="card-body">
+    <h5 class="card-title">
+      {{ carDetail.brandName }} {{ carDetail.carName }}
+    </h5>
+
+    <img [src]="getImgContent()" class="card-img-top"/>
+    
+    <table class="table table-striped mt-3">
+      <tbody >
+        <tr>
+          <td>Renk:</td>
+          <td >{{ carDetail.colorName }}</td>
+        </tr>
+        <tr>
+          <td>Model Yılı:</td>
+          <td>{{ carDetail.modelYear }}</td>
+        </tr>
+        <tr>
+          <td>Günlük Ücret:</td>
+          <td>{{ carDetail.dailyPrice | currency }}</td>
+        </tr>
+        <tr>
+          <td>Açıklama:</td>
+          <td>{{ carDetail.carDescription }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <a class="btn btn-primary" routerLink="/cars/detail/rental/{{carDetail.carID}}" >Kiralama sayfasına git --></a>
+  </div>
+</div>

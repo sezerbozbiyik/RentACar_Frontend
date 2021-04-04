@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Rental } from 'src/app/models/rental';
-import { RentalService } from 'src/app/services/rental.service';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
+import { ActivatedRoute } from '@angular/router';
+import { CarService } from 'src/app/services/car.service';
+import { CarDetail } from 'src/app/models/carDetail';
 
 @Component({
   selector: 'app-rental',
@@ -9,18 +11,38 @@ import { RentalService } from 'src/app/services/rental.service';
 })
 export class RentalComponent implements OnInit {
 
-  rentals: Rental[] = [];
-  dataLoaded = false;
-  constructor(private rentalService: RentalService) { }
+  rentalAddForm: FormGroup
+  carDetail: CarDetail
+  constructor(
+    private formBuilder: FormBuilder,
+    private carService: CarService,
+    private activetedRoute: ActivatedRoute,
+  ) { }
 
   ngOnInit(): void {
-    this.getRentals()
-  }
-
-  getRentals() {
-    this.rentalService.getRentals().subscribe((response) => {
-      this.rentals = response.data;
-      this.dataLoaded = true;
+    this.activetedRoute.params.subscribe(params => {
+      if (params["carId"]) {
+        this.createRentalAddFrom(params["carId"])
+        this.getCarDetailById(params["carId"])
+      }
     })
   }
+  
+  // carId: number doesn't work!
+  createRentalAddFrom(carId: string) {
+    this.rentalAddForm = this.formBuilder.group({
+      carId: parseInt(carId),
+      customerId: ["", Validators.required],
+      rentDate: ["", Validators.required],
+      returnDate: ["", Validators.required]
+    })
+
+  }
+
+  getCarDetailById(carId: number) {
+    this.carService.getCarDetailByCarId(carId).subscribe(response => {
+      this.carDetail = response.data;
+    })
+  }
+
 }

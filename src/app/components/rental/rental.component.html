@@ -1,24 +1,60 @@
-<div *ngIf="dataLoaded==false" class="text-center">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
+<div class="content">
+  <div class="card">
+    <div class="card-header"><h5 class="title">Araç Kiralama Sayfası</h5></div>
+    <div class="card-body">
+      <form [formGroup]="rentalAddForm">
+        <fieldset disabled *ngIf="carDetail">
+          <div class="mb-3">
+            <label for="selectedCarId" class="form-label">Seçilen Araba</label>
+            <input
+              type="number"
+              id="selectedCarId"
+              class="form-control"
+              placeholder="{{ carDetail.brandName }} {{ carDetail.carName }}"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="selectedCarDailyPrice" class="form-label">Günlük Ücret</label>
+            <input
+              type="text"
+              id="selectedCarDailyPrice"
+              class="form-control"
+              placeholder="{{ carDetail.dailyPrice  | currency:'TRY':'₺ ' }}"
+            />
+          </div>
+        </fieldset>
+        <div class="mb-3">
+          <label for="customerId" class="form-label">Müşteri Numarası</label>
+          <input
+            type="number"
+            id="customerId"
+            class="form-control"
+            formControlName="customerId"
+            placeholder="Müşteri numaranızı giriniz..."
+          />
+        </div>
+        <div class="mb-3">
+          <label for="rentDate" class="form-label">Alış Tarihi</label>
+          <input
+            type="datetime-local"
+            id="rentDate"
+            class="form-control"
+            formControlName="rentDate"
+            placeholder=""
+          />
+        </div>
+        <div class="mb-3">
+          <label for="returnDate" class="form-label">Teslim Tarihi</label>
+          <input
+            type="datetime-local"
+            id="returnDate"
+            class="form-control"
+            formControlName="returnDate"
+            placeholder=""
+          />
+        </div>
+      </form>
     </div>
   </div>
-
-<table *ngIf="dataLoaded == true" class="table">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Araba Id</th>
-      <th>Müşteri Id</th>
-      <th>Kiralama Tarihi</th>
-      <th>Teslim Tarihi</th>
-    </tr>
-  </thead>
-  <tr *ngFor="let rental of rentals" >
-    <td>{{ rental.id }}</td>
-    <td>{{ rental.carId}}</td>
-    <td>{{ rental.customerId }}</td>
-    <td>{{ rental.rentDate }}</td>
-    <td>{{ rental.returnDate }}</td>
-  </tr>
-</table>
+</div>
+<app-payment [childCarDetail]="carDetail" [childRentalForm]="rentalAddForm"></app-payment>

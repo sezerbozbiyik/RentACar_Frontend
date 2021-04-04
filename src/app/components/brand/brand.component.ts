@@ -1,6 +1,9 @@
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Brand } from 'src/app/models/brand';
 import { BrandService } from 'src/app/services/brand.service';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-brand',
@@ -9,13 +12,27 @@ import { BrandService } from 'src/app/services/brand.service';
 })
 export class BrandComponent implements OnInit {
 
+  currentBrand: Brand
+  brandForm: FormGroup
   brands: Brand[] = [];
-  currentBrand: Brand;
+  filterText: "";
   dataLoaded = false;
-  constructor(private brandService: BrandService) { }
+
+  constructor(
+    private brandService: BrandService,
+    private formBuilder: FormBuilder,
+    private toastrService: ToastrService,
+    public authService:AuthService,
+  ) { }
 
   ngOnInit(): void {
     this.getBrands();
+    this.createBrandForm();
+  }
+
+  setCurrentBrand(brand: Brand) {
+    this.currentBrand = brand
+    this.createBrandForm()
   }
 
   getBrands() {
@@ -25,27 +42,41 @@ export class BrandComponent implements OnInit {
     })
   }
 
-  setCurrentBrand(brand: Brand) {
-    this.currentBrand = brand;
+  createBrandForm() {
+    this.brandForm = this.formBuilder.group({
+      id: [this.currentBrand?.id, Validators.required],
+      brandName: [this.currentBrand ? this.currentBrand.brandName : "", Validators.required]
+    })
   }
 
-  getCurrentBrandClass(brand: Brand) {
-    if (brand == this.currentBrand) {
-      return "list-group-item active"
+  update() {
+    if (this.brandForm.valid) {
+      let brandModel = Object.assign({}, this.brandForm.value)
+      this.brandService.update(brandModel).subscribe(response => {
+        this.toastrService.success(response.message)
+      })
     } else {
-      return "list-group-item "
+      Object.entries(this.brandForm.controls).forEach(element => {
+        if (element[1].status === "INVALID") {
+          this.toastrService.warning(element[0] + " boş olmamalı")
+        }
+      });
     }
   }
 
-  getAllBrandClass() {
-    if (!this.currentBrand) {
-      return "list-group-item active"
+  delete() {
+    if (this.brandForm.valid) {
+      let brandModel = Object.assign({}, this.brandForm.value)
+      this.brandService.delete(brandModel).subscribe(response => {
+        this.toastrService.success(response.message)
+      })
     } else {
-      return "list-group-item "
+      Object.entries(this.brandForm.controls).forEach(element => {
+        if (element[1].status === "INVALID") {
+          this.toastrService.warning(element[0] + " boş olmamalı")
+        }
+      });
     }
   }
-
-  // deleteCurrentBrand(id:number){
-  //   this.currentBrand = this.currentBrand.filter(item => item.id !== id);
-  // } 
+  
 }

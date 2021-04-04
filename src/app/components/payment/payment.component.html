@@ -1,0 +1,112 @@
+<div class="content my-3">
+  <div class="row row-cols-2">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title float-start">Payment Details</h4>
+          <div class="form-check float-end">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="rememberCheck"
+            />
+            <label class="form-check-label" for="rememberCheck" type="checkbox">
+              Remember
+            </label>
+          </div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="paymentForm">
+            <label for="name">Ad Soyad</label>
+            <div>
+              <input
+                type="text"
+                id="name"
+                class="form-control"
+                formControlName="name"
+                placeholder="Ad Soyad"
+              />
+            </div>
+            <br />
+            <label for="cardNumber"> CARD NUMBER</label>
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                id="cardNumber"
+                formControlName="cardNumber"
+                placeholder="Valid Card Number"
+              />
+              <span class="input-group-text"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-lock-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"
+                  />
+                </svg>
+              </span>
+            </div>
+
+            <br />
+            <div class="row row-cols-2">
+              <div class="col-6">
+                <div class="row">
+                  <label for="expityMonth"> EXPIRY DATE</label>
+                  <div class="col-4">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="expityMonth"
+                      formControlName="expityMonth"
+                      placeholder="MM"
+                    />
+                  </div>
+                  <div class="col-4">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="expityYear"
+                      formControlName="expityYear"
+                      placeholder="YY"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="cvCode"> CV CODE</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="cvCode"
+                    formControlName="cvCode"
+                    placeholder="CV"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <app-receipt></app-receipt>
+    </div>
+    <div class="col-6">
+      <button class="btn btn-primary col-12 my-3" disabled>
+        <span class="float-start">Final Payment</span>
+        <span class="float-end">{{totalPayment}}</span>
+      </button>
+    
+      <button class="btn btn-success btn-lg col-12" (click)="add()">Pay</button>
+    </div>
+  </div>
+</div>

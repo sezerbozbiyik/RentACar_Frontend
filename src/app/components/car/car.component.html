@@ -1,30 +1,55 @@
-<div *ngIf="dataLoaded == false" class="text-center">
-  <div class="spinner-border" role="status">
-    <span class="visually-hidden">Loading...</span>
+<div class="content">
+  <div *ngIf="dataLoaded == false" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
-</div>
 
-<table *ngIf="dataLoaded == true" class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Marka</th>
-      <th>Model</th>
-      <th>Model Yılı</th>
-      <th>Renk</th>
-      <th>Günlük Ücret</th>
-      <th>Açıklama</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr routerLink="/cars/detail/{{car.id}}" *ngFor="let car of cars">
-    <td>{{ car.id }}</td>
-    <td>{{ car.brandId }}</td>
-    <td>{{ car.carName }}</td>
-    <td>{{ car.modelYear }}</td>
-    <td>{{ car.colorId }}</td>
-    <td>{{ car.dailyPrice }}</td>
-    <td>{{ car.carDescription }}</td>
-  </tr>
-  </tbody>
-</table>
+  <div class="row">
+    <div class="col-3"><app-car-filter></app-car-filter></div>
+    <div class="col-9">
+      <div class="mb-3">
+        <label for="filterCarText" class="form-label">Araba ara</label>
+        <input
+          type="text"
+          [(ngModel)]="filterText"
+          class="form-control"
+          id="filterCarText"
+          placeholder="Arama ifadesi giriniz..."
+        />
+      </div>
+      <div *ngIf="filterText" class="alert alert-success">
+        {{ filterText }} aradınız.
+      </div>
+      <table *ngIf="dataLoaded == true" class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Marka</th>
+            <th>Model</th>
+            <th>Renk</th>
+            <th>Model Yılı</th>
+            <th>Günlük Ücret</th>
+            <th>Açıklama</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            routerLink="/cars/detail/{{ car.carID }}"
+            *ngFor="let car of cars | carFilterPipe: filterText"
+          >
+            <td>{{ car.carID }}</td>
+            <td>{{ car.brandName }}</td>
+            <td>{{ car.carName }}</td>
+            <td>{{ car.colorName }}</td>
+            <td>{{ car.modelYear }}</td>
+            <td>{{ car.dailyPrice | currency: "TRY ":"₺ " }}</td>
+            <td>{{ car.carDescription }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  
+</div>

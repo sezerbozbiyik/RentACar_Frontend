@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Car } from 'src/app/models/car';
 import { CarDetail } from 'src/app/models/carDetail';
 import { CarImage } from 'src/app/models/carImage';
 import { CarService } from 'src/app/services/car.service';
@@ -14,41 +13,36 @@ import { CarService } from 'src/app/services/car.service';
 export class CarDetailComponent implements OnInit {
 
   carDetail: CarDetail;
-  carImage: CarImage;
-  currentCar:Car;
-  constructor(private carService: CarService,private sanitizer: DomSanitizer, private activetadRoute: ActivatedRoute) { }
+  carImages: CarImage;
+  constructor(
+    private carService: CarService,
+    private sanitizer: DomSanitizer,
+    private activetadRoute: ActivatedRoute,
+
+  ) { }
 
   ngOnInit(): void {
     this.activetadRoute.params.subscribe(params => {
       if (params["carId"]) {
         this.getCarDetailByCarId(params["carId"])
         this.getCarImageById(params["carId"])
-        this.getCarsById(params["carId"])
       }
     })
   }
   getCarDetailByCarId(carId: number) {
-    this.carService.getCarsDetailByCarId(carId).subscribe((response) => {
-      this.carDetail = response.data[0];
+    this.carService.getCarDetailByCarId(carId).subscribe((response) => {
+      this.carDetail = response.data;
     })
   }
 
   getCarImageById(carId: number) {
     this.carService.getCarImagesByCarId(carId).subscribe((response) => {
-      this.carImage=response.data[0];
-      console.log(response.data);
-    })
-  }
-
-  getCarsById(carId:number){
-    this.carService.getCarsById(carId).subscribe((response) => {
-      this.currentCar=response.data;
+      this.carImages = response.data[0];
     })
   }
 
   getImgContent(): SafeUrl {
-
+    return this.sanitizer.bypassSecurityTrustUrl("http://localhost:8887/" + this.carImages.imagePath.slice(73))
     
-    return this.sanitizer.bypassSecurityTrustUrl("http://localhost:8887/"+this.carImage.imagePath.slice(73));
-}
+  }
 }

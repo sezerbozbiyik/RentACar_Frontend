@@ -1,16 +1,14 @@
-<div class="container">
+<header>
   <app-navi></app-navi>
-  <br>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="col">
-        <app-brand></app-brand>
-        <br>
-       <app-color></app-color>
-      </div>
-    </div>
-    <div class="col-md-9">
-      <router-outlet></router-outlet>
-    </div>
+</header>
+<main>
+  <div class="container my-3">
+    <router-outlet></router-outlet>
   </div>
-</div>
+</main>
+
+<footer class="footer mt-auto py-3" style="background-color: #e3f2fd;">
+  <div class="container">
+    <span class="text-muted">Place sticky footer content here.</span>
+  </div>
+</footer>
