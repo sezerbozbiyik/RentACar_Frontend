@@ -1,6 +1,20 @@
-<div class="content my-3">
-  <div class="row row-cols-2">
-    <div class="col-6">
+<div class="container">
+  <div class="row row-cols-1">
+    <div class="col-10 mx-auto">
+      <div class="progress mb-3" style="height: 20px">
+        <div
+          class="progress-bar bg-success"
+          role="progressbar"
+          style="width: 75%"
+          aria-valuenow="75"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          75%
+        </div>
+      </div>
+    </div>
+    <div class="col-7 mx-auto">
       <div class="card">
         <div class="card-header">
           <h4 class="card-title float-start">Payment Details</h4>
@@ -96,17 +110,102 @@
           </form>
         </div>
       </div>
-    </div>
-    <div class="col-6">
-      <app-receipt></app-receipt>
-    </div>
-    <div class="col-6">
+
       <button class="btn btn-primary col-12 my-3" disabled>
         <span class="float-start">Final Payment</span>
-        <span class="float-end">{{totalPayment}}</span>
+        <span class="float-end">{{ finalPayment() | currency: "TRY " }}</span>
       </button>
-    
-      <button class="btn btn-success btn-lg col-12" (click)="add()">Pay</button>
+
+      <button class="btn btn-success btn-lg col-12" (click)="finish()">
+        Pay
+      </button>
+    </div>
+    <div class="col-10 mx-auto my-3">
+      <button
+        *ngIf="carDetail"
+        class="btn btn-primary float-start"
+        routerLink="/cars/rental/{{ carDetail.carID }}"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-arrow-left"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+          />
+        </svg>
+        Geri
+      </button>
+    </div>
+  </div>
+</div>
+
+<!---receipt modal-->
+<div class="modal" tabindex="-1" id="receiptModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Receipt</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="content-radius p-3">
+          <div class="row row-cols-2">
+            <div class="col-6">Ad Soyad:</div>
+            <div class="col-6 float-end">date:</div>
+          </div>
+          <div class="text-center my-4">
+            <h3>Receipt</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Car</th>
+                  <th>#</th>
+                  <th>DailyPrice</th>
+                  <th>TotalDay</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Renault Duster</td>
+                  <td>11</td>
+                  <td>150TL</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td colspan="4" style="text-align: end; font-weight: bold">
+                    Renault Duster
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Geri
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal    "
+        >
+          Güncelle
+        </button>
+      </div>
     </div>
   </div>
 </div>

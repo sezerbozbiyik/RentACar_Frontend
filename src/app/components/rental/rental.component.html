@@ -1,60 +1,115 @@
-<div class="content">
-  <div class="card">
-    <div class="card-header"><h5 class="title">Araç Kiralama Sayfası</h5></div>
-    <div class="card-body">
-      <form [formGroup]="rentalAddForm">
-        <fieldset disabled *ngIf="carDetail">
-          <div class="mb-3">
-            <label for="selectedCarId" class="form-label">Seçilen Araba</label>
-            <input
-              type="number"
-              id="selectedCarId"
-              class="form-control"
-              placeholder="{{ carDetail.brandName }} {{ carDetail.carName }}"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="selectedCarDailyPrice" class="form-label">Günlük Ücret</label>
-            <input
-              type="text"
-              id="selectedCarDailyPrice"
-              class="form-control"
-              placeholder="{{ carDetail.dailyPrice  | currency:'TRY':'₺ ' }}"
-            />
-          </div>
-        </fieldset>
-        <div class="mb-3">
-          <label for="customerId" class="form-label">Müşteri Numarası</label>
-          <input
-            type="number"
-            id="customerId"
-            class="form-control"
-            formControlName="customerId"
-            placeholder="Müşteri numaranızı giriniz..."
-          />
+<div class="container-sm">
+  <div class="row row-cols-1" *ngIf="carDetail">
+    <div class="col-10 mx-auto">
+      <div class="progress mb-3" style="height: 20px">
+        <div
+          class="progress-bar bg-success"
+          role="progressbar"
+          style="width: 50%"
+          aria-valuenow="50"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          50%
         </div>
-        <div class="mb-3">
-          <label for="rentDate" class="form-label">Alış Tarihi</label>
-          <input
-            type="datetime-local"
-            id="rentDate"
-            class="form-control"
-            formControlName="rentDate"
-            placeholder=""
-          />
+      </div>
+    </div>
+    <div class="col-7 mx-auto">
+      <div class="card">
+        <div class="card-header text-center">
+          <h5 class="title">Araç Kiralama Sayfası</h5>
         </div>
-        <div class="mb-3">
-          <label for="returnDate" class="form-label">Teslim Tarihi</label>
-          <input
-            type="datetime-local"
-            id="returnDate"
-            class="form-control"
-            formControlName="returnDate"
-            placeholder=""
-          />
+        <div class="card-body">
+          <form [formGroup]="rentalAddForm">
+            <fieldset disabled>
+              <div class="mb-3">
+                <label for="selectedCarId" class="form-label"
+                  >Seçilen Araba</label
+                >
+                <input
+                  type="number"
+                  id="selectedCarId"
+                  class="form-control"
+                  placeholder="{{ carDetail.brandName }} {{
+                    carDetail.carName
+                  }}"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="selectedCarDailyPrice" class="form-label"
+                  >Günlük Ücret</label
+                >
+                <input
+                  type="text"
+                  id="selectedCarDailyPrice"
+                  class="form-control"
+                  placeholder="{{
+                    carDetail.dailyPrice | currency: 'TRY':'₺ '
+                  }}"
+                />
+              </div>
+            </fieldset>
+            <div class="mb-3">
+              <label for="rentDate" class="form-label">Alış Tarihi</label>
+              <input
+                type="datetime-local"
+                id="rentDate"
+                class="form-control"
+                formControlName="rentDate"
+                placeholder=""
+              />
+            </div>
+            <div class="mb-3">
+              <label for="returnDate" class="form-label">Teslim Tarihi</label>
+              <input
+                type="datetime-local"
+                id="returnDate"
+                class="form-control"
+                formControlName="returnDate"
+                placeholder=""
+              />
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
+    </div>
+
+    <div class="col-10 mx-auto my-3">
+      <button
+        class="btn btn-primary float-start"
+        routerLink="/cars/detail/{{ carDetail.carID }}"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-arrow-left"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+          />
+        </svg>
+        Geri
+      </button>
+      <button class="btn btn-primary float-end" (click)="goToPayment()">
+        İleri
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-arrow-right"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+          />
+        </svg>
+      </button>
     </div>
   </div>
 </div>
-<app-payment [childCarDetail]="carDetail" [childRentalForm]="rentalAddForm"></app-payment>

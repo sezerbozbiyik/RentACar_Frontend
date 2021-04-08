@@ -3,7 +3,7 @@
   <input
     type="text"
     [(ngModel)]="filterText"
-    class="form-control"
+    class="form-control mb-3"
     id="filterBrandText"
     placeholder="Arama ifadesi giriniz..."
   />
@@ -13,12 +13,44 @@
 </div>
 
 <div class="list-group">
+  <div class="list-group-item" *ngIf="authService.isAuthenticated()">
+    <form class="form-group"  [formGroup]="addBrandForm">
+      <div class="input-group">
+        <span class="input-group-text" id="newBrand">Yeni Marka:</span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Marka"
+          formControlName="brandName"
+          id="newBrand"
+        />
+        <button 
+        class="btn btn-primary float-end mx-2" 
+        style="width: 92px"
+        (click)="add()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-file-earmark-plus-fill"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0z"
+            />
+          </svg>
+          Ekle
+        </button>
+      </div>
+    </form>
+  </div>
   <div
     class="list-group-item list-group-item-action"
     *ngFor="let brand of brands | brandFilterPipe: filterText"
-    routerLink="/cars/filter/brand/{{brand.id}}"
   >
-    <div class="float-start">
+    <div class="float-start" routerLink="/cars/filter/brand/{{ brand.id }}">
       {{ brand.brandName }}
     </div>
     <div *ngIf="authService.isAuthenticated()">
@@ -46,7 +78,7 @@
       <div class="float-end">
         <button
           type="button"
-          class="btn btn-success"
+          class="btn btn-info"
           data-bs-toggle="modal"
           data-bs-target="#brandModal"
           (click)="setCurrentBrand(brand)"
@@ -112,7 +144,7 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Geri
         </button>
-        <button type="button" class="btn btn-primary" (click)="update()">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="update()">
           Güncelle
         </button>
       </div>
@@ -139,7 +171,7 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Hayır
         </button>
-        <button type="button" class="btn btn-primary" (click)="delete()">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="delete()">
           Evet
         </button>
       </div>

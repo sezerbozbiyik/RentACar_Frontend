@@ -1,31 +1,35 @@
-<div class="card" style="width: 100%" *ngIf="carDetail && carImages">
-  <div class="card-body">
-    <h5 class="card-title">
-      {{ carDetail.brandName }} {{ carDetail.carName }}
-    </h5>
+<div class="container text-center">
+<div class="card col-8 mx-auto" *ngIf="carDetail && carImages">
+    <div class="card-body">
+      <h5 class="card-title">
+        {{ carDetail.brandName }} {{ carDetail.carName }}
+      </h5>
 
-    <img [src]="getImgContent()" class="card-img-top"/>
-    
-    <table class="table table-striped mt-3">
-      <tbody >
-        <tr>
-          <td>Renk:</td>
-          <td >{{ carDetail.colorName }}</td>
-        </tr>
-        <tr>
-          <td>Model Yılı:</td>
-          <td>{{ carDetail.modelYear }}</td>
-        </tr>
-        <tr>
-          <td>Günlük Ücret:</td>
-          <td>{{ carDetail.dailyPrice | currency }}</td>
-        </tr>
-        <tr>
-          <td>Açıklama:</td>
-          <td>{{ carDetail.carDescription }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <a class="btn btn-primary" routerLink="/cars/detail/rental/{{carDetail.carID}}" >Kiralama sayfasına git --></a>
+      <img [src]="getImgContent()" class="card-img-top" />
+
+      <table class="table table-striped mt-3">
+        <tbody>
+          <tr>
+            <td>Renk:</td>
+            <td>{{ carDetail.colorName }}</td>
+          </tr>
+          <tr>
+            <td>Model Yılı:</td>
+            <td>{{ carDetail.modelYear }}</td>
+          </tr>
+          <tr>
+            <td>Günlük Ücret:</td>
+            <td>{{ carDetail.dailyPrice | currency:"TRY"}}</td>
+          </tr>
+          <tr>
+            <td>Açıklama:</td>
+            <td>{{ carDetail.carDescription }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-success" routerLink="/cars/rental/{{carDetail.carID}}">
+        Aracı Kirala
+      </button>
+    </div>
   </div>
 </div>

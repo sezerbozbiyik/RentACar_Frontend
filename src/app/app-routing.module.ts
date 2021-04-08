@@ -1,6 +1,5 @@
 import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BrandDetailComponent } from './components/brand/brand-detail/brand-detail.component';
 import { BrandComponent } from './components/brand/brand.component';
 import { CarDetailComponent } from './components/car/car-detail/car-detail.component';
 import { CarComponent } from './components/car/car.component';
@@ -10,8 +9,8 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { RentalComponent } from './components/rental/rental.component';
-import { ColorDetailComponent } from './components/color/color-detail/color-detail.component';
 import { LoginGuard } from './guards/login.guard';
+import { ProfilComponent } from './components/profil/profil.component';
 
 
 const routes: Routes = [
@@ -25,19 +24,15 @@ const routes: Routes = [
   { path: 'cars/detail/:carId', component: CarDetailComponent },
 
   { path: "brands", component: BrandComponent },
-  { path: "brands/:brandId", component: BrandDetailComponent, canActivate: [LoginGuard] },
-
 
   { path: "colors", component: ColorComponent },
-  { path: "colors/:colorId", component: ColorDetailComponent, canActivate: [LoginGuard] },
 
-
-  { path: 'cars/detail/rental/:carId', component: RentalComponent },
-
-  { path: 'cars/detail/rental/payment', component: PaymentComponent, canActivate: [LoginGuard] },
+  { path: 'cars/rental/payment/:carId', component: PaymentComponent, canActivate: [LoginGuard] },
+  { path: 'cars/rental/:carId', component: RentalComponent, canActivate: [LoginGuard] },
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'profil', component: ProfilComponent,canActivate:[LoginGuard] },
 
 ];
 

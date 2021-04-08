@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/models/user';
+import { UserDetailDto } from 'src/app/models/Dtos/userDetailDto';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class NaviComponent implements OnInit {
 
-  user: User
+  user: UserDetailDto
 
   constructor(
     public authService: AuthService,
@@ -22,10 +22,9 @@ export class NaviComponent implements OnInit {
   }
 
   getUser() {
-    console.log(localStorage.getItem("email"))
     let mail = localStorage.getItem("email")
     if (mail != null) {
-      this.userService.getByMail(mail).subscribe(response => {
+      this.userService.getUserByMail(mail).subscribe(response => {
         this.user = response.data
       })
     }

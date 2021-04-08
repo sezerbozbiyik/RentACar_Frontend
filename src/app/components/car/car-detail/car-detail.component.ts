@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { CarDetail } from 'src/app/models/carDetail';
+import { CarDetailDto } from 'src/app/models/Dtos/carDetailDto';
 import { CarImage } from 'src/app/models/carImage';
 import { CarService } from 'src/app/services/car.service';
 
@@ -12,7 +12,7 @@ import { CarService } from 'src/app/services/car.service';
 })
 export class CarDetailComponent implements OnInit {
 
-  carDetail: CarDetail;
+  carDetail: CarDetailDto;
   carImages: CarImage;
   constructor(
     private carService: CarService,

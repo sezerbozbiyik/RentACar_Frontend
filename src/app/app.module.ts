@@ -19,13 +19,11 @@ import { CarFilterPipePipe } from './pipes/car-filter-pipe.pipe';
 import { ToastrModule } from 'ngx-toastr';
 import { CarFilterComponent } from './components/car/car-filter/car-filter.component';
 import { PaymentComponent } from './components/payment/payment.component';
-import { ReceiptComponent } from './components/payment/receipt/receipt.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { HomeComponent } from './components/home/home.component';
-import { BrandDetailComponent } from './components/brand/brand-detail/brand-detail.component';
 import { RegisterComponent } from './components/auth/register/register.component';
-import { ColorDetailComponent } from './components/color/color-detail/color-detail.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ProfilComponent } from './components/profil/profil.component';
 
 
 @NgModule({
@@ -42,12 +40,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     CarFilterPipePipe,
     CarFilterComponent,
     PaymentComponent,
-    ReceiptComponent,
     LoginComponent,
     HomeComponent,
-    BrandDetailComponent,
     RegisterComponent,
-    ColorDetailComponent
+    ProfilComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,7 +53,6 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: "toast-bottom-right",
-
     }),
     BrowserAnimationsModule,
   ],

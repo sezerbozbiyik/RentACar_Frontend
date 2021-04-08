@@ -45,7 +45,7 @@
         </button>
         <ul class="dropdown-menu">
 
-          <li><a class="dropdown-item" >Profil</a></li>
+          <li><a class="dropdown-item" *ngIf="user" routerLink="profil" >Profil</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" (click)="logout()">Çıkış yap</a></li>
         </ul>

@@ -1,20 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { SingleResponseModel } from '../models/singleResponseModel';
-import { User } from '../models/user';
+import { UserDetailDto } from '../models/Dtos/userDetailDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  apiUrl = "https://localhost:44344/api/users/getbymail?mail=";
+  apiUrl = "https://localhost:44344/api/users/getbymailuserdto?email=";
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
-  getByMail(mail:string):Observable<SingleResponseModel<User>>{
-    return this.httpClient.get<SingleResponseModel<User>>(this.apiUrl+mail)
+  getUserByMail(mail: string): Observable<SingleResponseModel<UserDetailDto>> {
+    return this.httpClient.get<SingleResponseModel<UserDetailDto>>(this.apiUrl + mail)
   }
 
 }

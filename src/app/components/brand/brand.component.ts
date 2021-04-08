@@ -14,6 +14,8 @@ export class BrandComponent implements OnInit {
 
   currentBrand: Brand
   brandForm: FormGroup
+  addResponse: string
+  addBrandForm: FormGroup
   brands: Brand[] = [];
   filterText: "";
   dataLoaded = false;
@@ -22,12 +24,13 @@ export class BrandComponent implements OnInit {
     private brandService: BrandService,
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
-    public authService:AuthService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {
     this.getBrands();
     this.createBrandForm();
+    this.createAddBrandForm();
   }
 
   setCurrentBrand(brand: Brand) {
@@ -49,11 +52,34 @@ export class BrandComponent implements OnInit {
     })
   }
 
+  createAddBrandForm() {
+    this.addBrandForm = this.formBuilder.group({
+      brandName: ["", Validators.required]
+    })
+  }
+
+  add() {
+    if (this.addBrandForm.valid) {
+      let addBrandModel = Object.assign({}, this.addBrandForm.value)
+      this.brandService.add(addBrandModel).subscribe(response => {
+        this.toastrService.success(response.message)
+        this.getBrands()
+      })
+    } else {
+      Object.entries(this.addBrandForm.controls).forEach(element => {
+        if (element[1].status === "INVALID") {
+          this.toastrService.warning(element[0] + " boş olmamalı")
+        }
+      });
+    }
+  }
+
   update() {
     if (this.brandForm.valid) {
       let brandModel = Object.assign({}, this.brandForm.value)
       this.brandService.update(brandModel).subscribe(response => {
         this.toastrService.success(response.message)
+        this.getBrands()
       })
     } else {
       Object.entries(this.brandForm.controls).forEach(element => {
@@ -69,6 +95,7 @@ export class BrandComponent implements OnInit {
       let brandModel = Object.assign({}, this.brandForm.value)
       this.brandService.delete(brandModel).subscribe(response => {
         this.toastrService.success(response.message)
+        this.getBrands()
       })
     } else {
       Object.entries(this.brandForm.controls).forEach(element => {
@@ -78,5 +105,5 @@ export class BrandComponent implements OnInit {
       });
     }
   }
-  
+
 }

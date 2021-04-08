@@ -13,6 +13,7 @@ import { ColorService } from 'src/app/services/color.service';
 export class ColorComponent implements OnInit {
 
   colorForm: FormGroup
+  addColorForm: FormGroup
   colors: Color[] = [];
   currentColor: Color;
   filterText: "";
@@ -22,13 +23,20 @@ export class ColorComponent implements OnInit {
     private colorService: ColorService,
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
-    public authService:AuthService
+    public authService: AuthService
 
   ) { }
 
   ngOnInit(): void {
+    this.getColors()
     this.createColorForm()
-    this.getColors();
+    this.createAddColorForm()
+
+  }
+
+  setCurrentColor(color: Color) {
+    this.currentColor = color;
+    this.createColorForm()
   }
 
   getColors() {
@@ -45,8 +53,26 @@ export class ColorComponent implements OnInit {
     })
   }
 
-  setCurrentColor(color: Color) {
-    this.currentColor = color;
+  createAddColorForm() {
+    this.addColorForm = this.formBuilder.group({
+      colorName: ["", Validators.required]
+    })
+  }
+
+  add() {
+    if (this.addColorForm.valid) {
+      let addColorModel = Object.assign({}, this.addColorForm.value)
+      this.colorService.add(addColorModel).subscribe(response => {
+        this.toastrService.success(response.message)
+        this.getColors()
+      })
+    } else {
+      Object.entries(this.addColorForm.controls).forEach(element => {
+        if (element[1].status === "INVALID") {
+          this.toastrService.warning(element[0] + " boş olmamalı")
+        }
+      });
+    }
   }
 
   update() {
@@ -54,6 +80,7 @@ export class ColorComponent implements OnInit {
       let brandModel = Object.assign({}, this.colorForm.value)
       this.colorService.update(brandModel).subscribe(response => {
         this.toastrService.success(response.message)
+        this.getColors()
       })
     } else {
       Object.entries(this.colorForm.controls).forEach(element => {
@@ -69,6 +96,7 @@ export class ColorComponent implements OnInit {
       let brandModel = Object.assign({}, this.colorForm.value)
       this.colorService.delete(brandModel).subscribe(response => {
         this.toastrService.success(response.message)
+        this.getColors()
       })
     } else {
       Object.entries(this.colorForm.controls).forEach(element => {

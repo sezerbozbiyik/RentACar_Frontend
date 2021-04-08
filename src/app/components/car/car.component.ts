@@ -1,7 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Brand } from 'src/app/models/brand';
-import { CarDetail } from 'src/app/models/carDetail';
+import { CarDetailDto } from 'src/app/models/Dtos/carDetailDto';
 import { Color } from 'src/app/models/color';
 import { CarService } from 'src/app/services/car.service';
 
@@ -12,7 +12,7 @@ import { CarService } from 'src/app/services/car.service';
 })
 export class CarComponent implements OnInit {
 
-  cars: CarDetail[];
+  cars: CarDetailDto[];
   brands: Brand[];
   colors: Color[];
   filterText: "";

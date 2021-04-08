@@ -1,7 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CarDetail } from 'src/app/models/carDetail';
+import { CarDetailDto } from 'src/app/models/Dtos/carDetailDto';
+import { Rental } from 'src/app/models/rental';
+import { CarService } from 'src/app/services/car.service';
 import { RentalService } from 'src/app/services/rental.service';
 
 @Component({
@@ -11,64 +14,66 @@ import { RentalService } from 'src/app/services/rental.service';
 })
 export class PaymentComponent implements OnInit {
 
-  @Input() childCarDetail: CarDetail;
-  @Input() childRentalForm: FormGroup;
-
-  paymentForm:FormGroup
-  totalPayment:number
-  differenceInDay:number
+  carDetail: CarDetailDto;
+  rentalForm: Rental
+  paymentForm: FormGroup
+  differenceInDay: number
 
   constructor(
-    private rentalService:RentalService,
-    private toastrService:ToastrService,
-    private formBuilder:FormBuilder
-    ) { }
+    private rentalService: RentalService,
+    private toastrService: ToastrService,
+    private formBuilder: FormBuilder,
+    private carService: CarService,
+    private activetedRoute: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.createPaymentForm()
-  }
-
-  createPaymentForm(){
-    this.paymentForm = this.formBuilder.group({
-      name:["",Validators.required],
-      cardNumber:["",Validators.required],
-      expityMonth: ["",Validators.required],
-      expityYear:["",Validators.required],
-      cvCode:["",Validators.required]
+    this.activetedRoute.params.subscribe(params => {
+      if (params["carId"]) {
+        this.createPaymentForm()
+        this.getCarDetailById(params["carId"])
+        this.rentalService.currentStageRental.subscribe(response => this.rentalForm = response)
+        if (!this.rentalForm.rentDate) {
+          this.router.navigateByUrl("/cars/rental/" + params["carId"])
+        }
+      }
     })
   }
 
-
-  add() {
-    if (this.paymentForm.valid) {
-      if (this.childRentalForm.valid) {
-      let rentalModel = Object.assign({}, this.childRentalForm.value)
-      this.rentalService.addRental(rentalModel).subscribe((response) => {
-        this.toastrService.success(response.message, "Ödeme Gerçekleştiriliyor...")
-      }, responseError => {
-        if (responseError.error.ValidationErrors && responseError.error.ValidationErrors.length > 0) {
-          for (let i = 0; i < responseError.error.ValidationErrors.length; i++) {
-            this.toastrService.error(responseError.error.ValidationErrors[i].ErrorMessage, "Doğrulama Hatası")
-          }
-        }
-        this.toastrService.error(responseError.error.message, "Hata")
-      })
-    } else {
-      this.toastrService.error("Formunuz eksik", "Dikkat")
-    }
-    }else{
-      this.toastrService.error("Kredi Kart Bilgileri Hatalı", "Dikkat")
-    }
-    
+  createPaymentForm() {
+    this.paymentForm = this.formBuilder.group({
+      name: ["", Validators.required],
+      cardNumber: ["", Validators.required],
+      expityMonth: ["", Validators.required],
+      expityYear: ["", Validators.required],
+      cvCode: ["", Validators.required]
+    })
   }
 
-  
-  finalPayment(){
-    let rentalModel= Object.assign({},this.childRentalForm.value)
-    let date1=new Date(rentalModel.rentDate)
-    let date2 = new Date(rentalModel.returnDate)
-    this.differenceInDay = (date2.getTime()-date1.getTime())/ (1000 * 3600 * 24)
-    
-    return this.totalPayment=(this.differenceInDay*this.childCarDetail.dailyPrice)
+  getCarDetailById(carId: number) {
+    this.carService.getCarDetailByCarId(carId).subscribe(response => {
+      this.carDetail = response.data
+    })
+  }
+
+  finalPayment() {
+    let date1 = new Date(this.rentalForm.rentDate)
+    let date2 = new Date(this.rentalForm.returnDate)
+    this.differenceInDay = (date2.getTime() - date1.getTime()) / (1000 * 3600 * 24)
+    return this.differenceInDay * this.carDetail?.dailyPrice
+  }
+
+  finish() {
+    if (this.paymentForm.valid) {
+      this.toastrService.success("Ödemeniz Gerçekleştirildi.")
+    } else {
+      Object.entries(this.paymentForm.controls).forEach(element => {
+        if (element[1].status === "INVALID") {
+          this.toastrService.warning(element[0] + " boş olmamalı")
+        }
+      });
+    }
+    console.log(this.rentalForm)
   }
 }
