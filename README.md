@@ -1,39 +1,3 @@
-![Image](https://drive.google.com/drive/folders/1Q_OBO0U_9CV6UIhzjtkBo0H7XpF2LnqV/Resim1.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # RentACar
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.3.
