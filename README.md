@@ -20,17 +20,6 @@
 
 ![Resim14](https://user-images.githubusercontent.com/71348963/114245559-5d579900-9999-11eb-8563-02ae7769e7d4.png)
 
-#!/bin/bash
-
-#File: tree-md
-
-tree=$(tree -tf --noreport -I '*~' --charset ascii $1 |
-       sed -e 's/| \+/  /g' -e 's/[|`]-\+/ */g' -e 's:\(* \)\(\(.*/\)\([^/]\+\)\):\1[\4](\2):g')
-
-printf "# Project tree\n\n${tree}"
-
-
-
 
 
 # RentACar
