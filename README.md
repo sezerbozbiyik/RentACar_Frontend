@@ -8,9 +8,14 @@
 ![Resim8](https://user-images.githubusercontent.com/71348963/114245551-5b8dd580-9999-11eb-8b3b-f8fd6adbcfb0.png)
 ![Resim9](https://user-images.githubusercontent.com/71348963/114245552-5b8dd580-9999-11eb-8c96-33c5b602f216.png)
 ![Resim10](https://user-images.githubusercontent.com/71348963/114245554-5c266c00-9999-11eb-9c9b-340668239d21.png)
+
+
 ![Resim11](https://user-images.githubusercontent.com/71348963/114245556-5c266c00-9999-11eb-9980-7ce7b38e953b.png)
+
 ![Resim12](https://user-images.githubusercontent.com/71348963/114245557-5cbf0280-9999-11eb-86ef-f6c946d56789.png)
+
 ![Resim13](https://user-images.githubusercontent.com/71348963/114245558-5cbf0280-9999-11eb-95cd-48887eb6a429.png)
+
 ![Resim14](https://user-images.githubusercontent.com/71348963/114245559-5d579900-9999-11eb-8563-02ae7769e7d4.png)
 
 
