@@ -6,7 +6,9 @@
   </div>
 
   <div class="row">
-    <div class="col-3"><app-car-filter></app-car-filter></div>
+    <div class="col-3">
+      <app-car-filter [colors]="colors" [brands]="brands"></app-car-filter>
+    </div>
     <div class="col-9">
       <div class="mb-3">
         <label for="filterCarText" class="form-label">Araba ara</label>
@@ -21,33 +23,247 @@
       <div *ngIf="filterText" class="alert alert-success">
         {{ filterText }} aradınız.
       </div>
-      <table *ngIf="dataLoaded == true" class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Marka</th>
-            <th>Model</th>
-            <th>Renk</th>
-            <th>Model Yılı</th>
-            <th>Günlük Ücret</th>
-            <th>Açıklama</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            routerLink="/cars/detail/{{ car.carID }}"
-            *ngFor="let car of cars | carFilterPipe: filterText"
-          >
-            <td>{{ car.carID }}</td>
-            <td>{{ car.brandName }}</td>
-            <td>{{ car.carName }}</td>
-            <td>{{ car.colorName }}</td>
-            <td>{{ car.modelYear }}</td>
-            <td>{{ car.dailyPrice | currency: "TRY ":"₺ " }}</td>
-            <td>{{ car.carDescription }}</td>
-          </tr>
-        </tbody>
-      </table>
+
+      <!--Araç Ekleme Layout-->
+      <div *ngIf="isLogin" class="row mx-auto mb-2">
+        <input class="col-11" placeholder="Yeni Araç Ekle" disabled />
+        <button
+          data-bs-toggle="modal"
+          data-bs-target="#addCarModal"
+          class="col-1 btn btn-danger"
+        >
+          +
+        </button>
+      </div>
+
+      <div class="row" *ngIf="dataLoaded">
+        <div *ngFor="let car of cars" class="col-4">
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row">
+                <h5 class="col">{{ car.brandName }} {{ car.carName }}</h5>
+                <button
+                  *ngIf="isLogin"
+                  class="col-2 btn btn-danger"
+                  (click)="setCurrentCar(car)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#carDeleteModal"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-trash-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="text-center">
+                <img [src]="getImgContent()" width="200px" height="200px" />
+              </div>
+
+              <table class="table table-borderless">
+                <tbody>
+                  <tr>
+                    <th>Marka:</th>
+                    <td>{{ car.brandName }}</td>
+                  </tr>
+                  <tr>
+                    <th>Model:</th>
+                    <td>{{ car.carName }}</td>
+                  </tr>
+                  <tr>
+                    <th>Renk:</th>
+                    <td>{{ car.colorName }}</td>
+                  </tr>
+                  <tr>
+                    <th>Model Yılı:</th>
+                    <td>{{ car.modelYear }}</td>
+                  </tr>
+                  <tr>
+                    <th>Günlük Ücret:</th>
+                    <td>{{ car.dailyPrice | currency: "TRY ":"₺ " }}</td>
+                  </tr>
+                  <tr>
+                    <th colspan="2">Açıklama</th>
+                  </tr>
+                  <tr>
+                    <td colspan="2">{{ car.carDescription }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <button
+                class="btn btn-primary float-end"
+                routerLink="/cars/detail/{{ car.carID }}"
+              >
+                Kirala
+              </button>
+
+              <button *ngIf="isLogin" class="btn btn-success float-start">
+                Güncelle
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <td *ngIf="isLogin">
+  <button
+    class="btn btn-danger float-end"
+    (click)="setCurrentCar(car)"
+    data-bs-toggle="modal"
+    data-bs-target="#carDeleteModal"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      class="bi bi-trash-fill"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+      />
+    </svg>
+  </button>
+</td> -->
+
+<!--Araç Ekleme Modal-->
+<div class="modal" tabindex="-1" id="addCarModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Yeni Araba Ekle</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addCarForm">
+          <div class="mb-3">
+            <label for="brands">Marka</label>
+            <select
+              [(ngModel)]="brandFilter"
+              class="form-select"
+              id="brands"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              <option [value]="brand.id" *ngFor="let brand of brands">
+                {{ brand.brandName }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="carName">Model</label>
+            <input
+              type="text"
+              id="carName"
+              class="form-control"
+              formControlName="carName"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="colors">Renk</label>
+            <select
+              [(ngModel)]="colorFilter"
+              class="form-select"
+              id="colors"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              <option [value]="color.id" *ngFor="let color of colors">
+                {{ color.colorName }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="modelYear">Model Yılı</label>
+            <input
+              type="number"
+              id="modelYear"
+              class="form-control"
+              formControlName="modelYear"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="dailyPrice">Günlük Ücret</label>
+            <input
+              type="number"
+              id="dailyPrice"
+              class="form-control"
+              formControlName="dailyPrice"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="carDescription">Açıklama</label>
+            <input
+              type="text"
+              id="carDescription"
+              class="form-control"
+              formControlName="carDescription"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Geri
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="add()"
+        >
+          Ekle
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Araç Silme Modal-->
+<div class="modal" tabindex="-1" id="carDeleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body" *ngIf="currentCar">
+        {{ currentCar.carName }} aracı silmek istediğinize eminmisiniz!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Hayır
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="delete()"
+        >
+          Evet
+        </button>
+      </div>
     </div>
   </div>
 </div>

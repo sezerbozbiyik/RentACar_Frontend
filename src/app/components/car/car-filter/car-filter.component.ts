@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Brand } from 'src/app/models/brand';
 import { Color } from 'src/app/models/color';
@@ -13,43 +13,26 @@ import { ColorService } from 'src/app/services/color.service';
 export class CarFilterComponent implements OnInit {
 
   constructor(
-    private colorService: ColorService, 
-    private brandService: BrandService,
     public router:Router
     
     ) { }
 
-  colors: Color[]
-  brands: Brand[]
+  @Input() colors: Color[]
+  @Input() brands: Brand[]
   brandFilter:number
   colorFilter:number
 
   ngOnInit(): void {
-    this.getBrands()
-    this.getColors()
-  }
-
-  getColors() {
-    this.colorService.getColors().subscribe(response => {
-      this.colors = response.data
-    })
-  }
-
-  getBrands() {
-    this.brandService.getBrands().subscribe(response => {
-      this.brands = response.data
-    })
   }
   routerCars(){
     if (this.brandFilter && this.colorFilter) {
-      return "filter/"+this.brandFilter+"/"+this.colorFilter
+      this.router.navigateByUrl("cars/filter/"+this.brandFilter+"/"+this.colorFilter)
     }
     else if (this.brandFilter && !this.colorFilter){
-      return "filter/brand/"+this.brandFilter
+      this.router.navigateByUrl("cars/filter/brand/"+this.brandFilter)
     }
     else if (!this.brandFilter && this.colorFilter){
-      return "filter/color/"+this.colorFilter
-    }else{return null}
-    
+      this.router.navigateByUrl("cars/filter/color/"+this.colorFilter)
+    }
   }
 }

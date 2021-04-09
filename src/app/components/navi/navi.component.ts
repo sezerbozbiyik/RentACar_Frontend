@@ -31,7 +31,7 @@ export class NaviComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem("token")
-    localStorage.removeItem("email")
+    this.authService.logout()
+    window.location.reload()
   }
 }

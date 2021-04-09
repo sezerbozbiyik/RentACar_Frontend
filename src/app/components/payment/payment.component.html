@@ -5,12 +5,11 @@
         <div
           class="progress-bar bg-success"
           role="progressbar"
-          style="width: 75%"
-          aria-valuenow="75"
+          [style]="statusStyle"
           aria-valuemin="0"
           aria-valuemax="100"
         >
-          75%
+          {{ statusBar }}%
         </div>
       </div>
     </div>
@@ -115,8 +114,16 @@
         <span class="float-start">Final Payment</span>
         <span class="float-end">{{ finalPayment() | currency: "TRY " }}</span>
       </button>
+      <button
+        *ngIf="receiptModal"
+        data-bs-toggle="modal"
+        data-bs-target="#receiptModal"
+        class="btn btn-info col-12 mb-3"
+      >
+        Dekont
+      </button>
 
-      <button class="btn btn-success btn-lg col-12" (click)="finish()">
+      <button *ngIf="!receiptModal" class="btn btn-success btn-lg col-12" (click)="finish()">
         Pay
       </button>
     </div>
@@ -146,7 +153,7 @@
 </div>
 
 <!---receipt modal-->
-<div class="modal" tabindex="-1" id="receiptModal">
+<div class="modal" tabindex="-1" [id]="receiptModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -161,8 +168,10 @@
       <div class="modal-body">
         <div class="content-radius p-3">
           <div class="row row-cols-2">
-            <div class="col-6">Ad Soyad:</div>
-            <div class="col-6 float-end">date:</div>
+            <div class="col-6" *ngIf="user">
+              Ad Soyad: {{ user.firstName }} {{ user.lastName }}
+            </div>
+            <div class="col-6 float-end">date: {{ currentTime }}</div>
           </div>
           <div class="text-center my-4">
             <h3>Receipt</h3>
@@ -203,7 +212,7 @@
           class="btn btn-primary"
           data-bs-dismiss="modal    "
         >
-          Güncelle
+          Gönder
         </button>
       </div>
     </div>
