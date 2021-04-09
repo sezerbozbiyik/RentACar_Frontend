@@ -1,4 +1,4 @@
-![Image of Yaktocat](https://drive.google.com/file/d/1oNcYbvpXOJLSCq3IX21X6wLCKw_fqHSG/view?usp=sharing)
+![Image](https://drive.google.com/file/d/1oNcYbvpXOJLSCq3IX21X6wLCKw_fqHSG/view?usp=sharing)
 
 
 
