@@ -1,4 +1,4 @@
-![Image](https://drive.google.com/drive/folders/1Q_OBO0U_9CV6UIhzjtkBo0H7XpF2LnqV?usp=sharing/Resim1.png)
+![Image](https://drive.google.com/drive/folders/1Q_OBO0U_9CV6UIhzjtkBo0H7XpF2LnqV/Resim1.png)
 
 
 
